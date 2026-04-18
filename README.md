@@ -67,7 +67,7 @@
 
 <div align="center">
 
-<img src="https://github-profile-trophy.vercel.app/?username=txdywy&theme=oldie&no-frame=true&column=7&margin-w=10&margin-h=10" alt="trophies" />
+<img src="https://github-profile-trophy.vercel.app/?username=txdywy&theme=oldie&no-frame=true&column=4&margin-w=8&margin-h=8" alt="trophies" />
 
 </div>
 
