@@ -15,15 +15,6 @@
 
 </div>
 
-<br><br>
-
-<!-- 引言 -->
-<div align="center">
-
-<img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=light&quote=%E5%8C%96%E7%B9%81%E4%B8%BA%E7%AE%80%EF%BC%8C%E5%AE%88%E6%8B%99%E6%8A%B1%E6%9C%B4&author=%E2%80%94%E2%80%94%20%E8%80%81%E8%81%94" alt="quote" />
-
-</div>
-
 <br>
 
 ---
