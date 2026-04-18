@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猫球小子 | GitHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #F5F2ED;
+            --text-primary: #1C1C1C;
+            --text-secondary: #6B6B6B;
+            --accent: #9B3A3A;
+            --border: #D4CFC6;
+            --border-light: #E8E4DD;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* 纸张纹理 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* 首屏 */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 0 10vw;
+        }
+
+        /* 左侧竖线 */
+        .hero::before {
+            content: '';
+            position: absolute;
+            left: 8vw;
+            top: 15vh;
+            width: 1px;
+            height: 70vh;
+            background: linear-gradient(to bottom, transparent, var(--border) 20%, var(--border) 80%, transparent);
+            animation: lineGrow 2s ease-out 0.5s both;
+        }
+
+        @keyframes lineGrow {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+
+        .hero-content {
+            margin-left: 8vw;
+            max-width: 600px;
+        }
+
+        .greeting {
+            font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .name {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.3s both;
+        }
+
+        .name span {
+            display: inline-block;
+            position: relative;
+        }
+
+        .name span::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: underlineExpand 0.8s ease-out 2s both;
+        }
+
+        @keyframes underlineExpand {
+            to { transform: scaleX(1); }
+        }
+
+        .tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.6s both;
+        }
+
+        .divider {
+            width: 60px;
+            height: 1px;
+            background-color: var(--border);
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.9s both;
+        }
+
+        .stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2.2s both;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.2em;
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .links {
+            display: flex;
+            gap: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2.5s both;
+        }
+
+        .link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            position: relative;
+            padding-bottom: 3px;
+            transition: color 0.3s ease;
+        }
+
+        .link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease;
+        }
+
+        .link:hover {
+            color: var(--accent);
+        }
+
+        .link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* 竖排文字 */
+        .vertical-text {
+            position: fixed;
+            right: 3vw;
+            top: 50%;
+            transform: translateY(-50%);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.4em;
+            color: var(--border);
+            opacity: 0;
+            animation: fadeIn 2s ease-out 3s both;
+            pointer-events: none;
+        }
+
+        /* Tech Stack Section */
+        .tech-section {
+            padding: 15vh 10vw;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--border), transparent);
+            max-width: 200px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            border-top: 1px solid var(--border-light);
+            border-left: 1px solid var(--border-light);
+        }
+
+        .tech-item {
+            padding: 2.5rem 2rem;
+            border-right: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            transition: all 0.4s ease;
+            cursor: default;
+        }
+
+        .tech-item:hover {
+            background-color: rgba(155, 58, 58, 0.03);
+        }
+
+        .tech-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .tech-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* GitHub Stats Section */
+        .stats-section {
+            padding: 10vh 10vw;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stats-section img {
+            max-width: 100%;
+            height: auto;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .stats-section img:hover {
+            opacity: 1;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 8vh 10vw;
+            text-align: center;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .footer-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 滚动显示 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 0 5vw;
+            }
+            .hero::before {
+                left: 3vw;
+            }
+            .hero-content {
+                margin-left: 4vw;
+            }
+            .vertical-text {
+                display: none;
+            }
+            .stats {
+                gap: 2rem;
+            }
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 光标效果 */
+        .cursor-follower {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.15s ease-out;
+            mix-blend-mode: difference;
+        }
+
+        body:hover .cursor-follower {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 光标跟随 -->
+    <div class="cursor-follower"></div>
+
+    <!-- 首屏 -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="greeting">Hello & Welcome</div>
+            <h1 class="name"><span>猫球小子</span></h1>
+            <p class="tagline">Ping anything!</p>
+            <div class="divider"></div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="50">0</span>
+                    <span class="stat-label">Repositories</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="100">0</span>
+                    <span class="stat-label">Contributions</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="5">0</span>
+                    <span class="stat-label">Years</span>
+                </div>
+            </div>
+            <div class="links">
+                <a href="https://github.com/txdywy" class="link" target="_blank">GitHub</a>
+                <a href="https://twitter.com/txdywy" class="link" target="_blank">Twitter</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 竖排装饰文字 -->
+    <div class="vertical-text">GitHub Profile &mdash; 2024</div>
+
+    <!-- 技术栈 -->
+    <section class="tech-section">
+        <div class="section-title">Tech Stack</div>
+        <div class="tech-grid">
+            <div class="tech-item reveal">
+                <div class="tech-name">Python</div>
+                <div class="tech-desc">Backend & Data</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">Go</div>
+                <div class="tech-desc">High Performance</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">Rust</div>
+                <div class="tech-desc">Systems Programming</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">Java</div>
+                <div class="tech-desc">Enterprise Apps</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">JavaScript</div>
+                <div class="tech-desc">Frontend Logic</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">React</div>
+                <div class="tech-desc">UI Components</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">Docker</div>
+                <div class="tech-desc">Containerization</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">PostgreSQL</div>
+                <div class="tech-desc">Relational Data</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">Redis</div>
+                <div class="tech-desc">Caching Layer</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">AWS</div>
+                <div class="tech-desc">Cloud Infrastructure</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">Nginx</div>
+                <div class="tech-desc">Web Server</div>
+            </div>
+            <div class="tech-item reveal">
+                <div class="tech-name">MySQL</div>
+                <div class="tech-desc">Database</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GitHub Stats -->
+    <section class="stats-section">
+        <img src="https://github-readme-stats.vercel.app/api?username=txdywy&show_icons=true&theme=default&hide_border=true&count_private=true&title_color=1C1C1C&text_color=6B6B6B&icon_color=9B3A3A" alt="GitHub Stats">
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=txdywy&layout=compact&hide_border=true&title_color=1C1C1C&text_color=6B6B6B" alt="Top Languages">
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">Keep coding, keep learning</p>
+    </footer>
+
+    <script>
+        // 数字计数动画
+        const counters = document.querySelectorAll('.stat-number');
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-count'));
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const updateCounter = () => {
+                current += increment;
+                if (current < target) {
+                    counter.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = target + '+';
+                }
+            };
+
+            setTimeout(updateCounter, 2000);
+        });
+
+        // 滚动显示
+        const reveals = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    el.classList.add('active');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // 光标跟随
+        const cursor = document.querySelector('.cursor-follower');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+        // 鼠标悬停时放大
+        document.querySelectorAll('a, .tech-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(1.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+
+</body>
+</html>
