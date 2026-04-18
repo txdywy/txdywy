@@ -93,11 +93,13 @@
 
 ### ◦ 近期活动
 
-<div align="center">
-
-<img src="https://ghchart.rshah.org/9B3A3A/txdywy" alt="GitHub contributions" />
-
-</div>
+| 日期 | Commit | 说明 |
+|:---:|:---|:---|
+| 2026-04-18 | `8bdfb04` | Replace activity graph with real GitHub contribution chart |
+| 2026-04-18 | `5dce9cf` | Remove quote section |
+| 2026-04-18 | `e082528` | Replace broken trophy service with GitHub native achievement badges |
+| 2026-04-18 | `5394d48` | Fix trophy display: reduce columns from 7 to 4 for better layout |
+| 2026-04-18 | `4b61876` | Enrich GitHub profile README with more visual elements |
 
 <br>
 
