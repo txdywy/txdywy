@@ -67,7 +67,15 @@
 
 <div align="center">
 
-<img src="https://github-profile-trophy.vercel.app/?username=txdywy&theme=oldie&no-frame=true&column=4&margin-w=8&margin-h=8" alt="trophies" />
+<img src="https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png" width="60" alt="Starstruck" /> <img src="https://github.githubassets.com/images/modules/profile/achievements/quickdraw-default.png" width="60" alt="Quickdraw" /> <img src="https://github.githubassets.com/images/modules/profile/achievements/pair-extraordinaire-default.png" width="60" alt="Pair Extraordinaire" /> <img src="https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png" width="60" alt="Pull Shark" />
+
+<br>
+
+<img src="https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png" width="60" alt="Galaxy Brain" /> <img src="https://github.githubassets.com/images/modules/profile/achievements/heart-on-your-sleeve-default.png" width="60" alt="Heart On Your Sleeve" /> <img src="https://github.githubassets.com/images/modules/profile/achievements/open-sourcerer-default.png" width="60" alt="Open Sourcerer" /> <img src="https://github.githubassets.com/images/modules/profile/achievements/yolo-default.png" width="60" alt="YOLO" />
+
+<br>
+
+<img src="https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png" width="60" alt="Arctic Code Vault" /> <img src="https://github.githubassets.com/images/modules/profile/achievements/public-sponsor-default.png" width="60" alt="Public Sponsor" />
 
 </div>
 
