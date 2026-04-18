@@ -408,17 +408,17 @@
             <h1 class="name"><span>猫球小子</span></h1>
             <p class="tagline">Ping anything!</p>
             <div class="divider"></div>
-            <div class="stats">
+            <div class="stats" id="stats">
                 <div class="stat-item">
-                    <span class="stat-number" data-count="50">0</span>
+                    <span class="stat-number" id="stat-repos">0</span>
                     <span class="stat-label">Repositories</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number" data-count="100">0</span>
-                    <span class="stat-label">Contributions</span>
+                    <span class="stat-number" id="stat-followers">0</span>
+                    <span class="stat-label">Followers</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number" data-count="5">0</span>
+                    <span class="stat-number" id="stat-years">0</span>
                     <span class="stat-label">Years</span>
                 </div>
             </div>
@@ -499,26 +499,48 @@
     </footer>
 
     <script>
-        // 数字计数动画
-        const counters = document.querySelectorAll('.stat-number');
-        counters.forEach(counter => {
-            const target = parseInt(counter.getAttribute('data-count'));
+        // GitHub 数据获取与计数动画
+        async function fetchGitHubData() {
+            try {
+                const res = await fetch('https://api.github.com/users/txdywy');
+                if (!res.ok) throw new Error('API failed');
+                const data = await res.json();
+
+                const repos = data.public_repos || 0;
+                const followers = data.followers || 0;
+                const created = new Date(data.created_at);
+                const years = Math.floor((Date.now() - created.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+
+                animateCounter('stat-repos', repos);
+                animateCounter('stat-followers', followers);
+                animateCounter('stat-years', years);
+            } catch (e) {
+                // fallback: show static numbers
+                document.getElementById('stat-repos').textContent = '50+';
+                document.getElementById('stat-followers').textContent = '100+';
+                document.getElementById('stat-years').textContent = '5+';
+            }
+        }
+
+        function animateCounter(id, target) {
+            const el = document.getElementById(id);
             const duration = 2000;
             const increment = target / (duration / 16);
             let current = 0;
 
-            const updateCounter = () => {
+            const update = () => {
                 current += increment;
                 if (current < target) {
-                    counter.textContent = Math.floor(current);
-                    requestAnimationFrame(updateCounter);
+                    el.textContent = Math.floor(current);
+                    requestAnimationFrame(update);
                 } else {
-                    counter.textContent = target + '+';
+                    el.textContent = target;
                 }
             };
+            requestAnimationFrame(update);
+        }
 
-            setTimeout(updateCounter, 2000);
-        });
+        setTimeout(fetchGitHubData, 2000);
 
         // 滚动显示
         const reveals = document.querySelectorAll('.reveal');
