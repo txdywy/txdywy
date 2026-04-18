@@ -95,7 +95,7 @@
 
 <div align="center">
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=txdywy&bg_color=F5F2ED&color=6B6B6B&line=9B3A3A&point=1C1C1C&hide_border=true&area=true&area_color=9B3A3A20" alt="activity" />
+<img src="https://ghchart.rshah.org/9B3A3A/txdywy" alt="GitHub contributions" />
 
 </div>
 
